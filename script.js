@@ -1,6 +1,7 @@
 let pokemonJsonsArray = [];
 let pokemonCardBGColorArray = [];
 let firstRenderId = 22;
+let scrollEnabled = true;
 
 
 
@@ -111,12 +112,37 @@ function renderSearchFunctionTypes(i, pokemonTypes) {
 }
 
 
-function openBackground() {
+function openBackground(i) {
     let background = document.getElementById('body');
-    background.innerHTML += `
-        <div class"dark-background">
+    scrollManagement();
+    background.innerHTML += /*html*/`
+        <div id="dark-background" class="dark-background">
+            
         </div>
     `
+
+    let darkBackground = document.getElementById('dark-background');
+    darkBackground.innerHTML = /*html*/`
+        <button class="skip-btn next" onclick="nextPokemon('+')">></button>
+        <button class="skip-btn prev" onclick="prevPokemon('-')"><</button>
+        <div id="pokemon-details-card-${i}" class="pokemon-details-card">
+            ${i}
+        </div>
+    `
+}
+
+
+
+
+
+function scrollManagement(){
+    if (scrollEnabled) {
+        document.body.style.overflow = 'hidden';
+        scrollEnabled = false;
+    } else {
+        document.body.style.overflow = 'auto';
+        scrollEnabled = true;
+    }
 }
 
 
@@ -125,7 +151,7 @@ function openBackground() {
 
 function renderAllPokemmonHtml(i, pokemon, pokemonCardImage) {
     return /*html*/`
-        <div id="pokemon-card-${i}" class="pokemon-card" onclick="openBackground()">
+        <div id="pokemon-card-${i}" class="pokemon-card" onclick="openBackground(${i})">
             <div>
                 <h2>${formatPokemonIdText(pokemon['id'])}</h2>
                 <h1>${pokemon['name']}</h1>
