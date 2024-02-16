@@ -11,11 +11,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
-<body onload="init()">
+<body id="body" onload="init()">
     <header>
         <div class="max-width">
             <img src="./img/logo.png" alt="logo">
-            <input class="search-bar" placeholder="type text or pokemon id">
+            <input id="search-bar" class="search-bar" placeholder="type text or pokemon id" onkeyup="searchField()">
             <h6>Pokedex V2</h6>
         </div>
     </header>

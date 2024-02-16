@@ -56,6 +56,7 @@ h6 {
     padding: 16px;
     display: flex;
     gap: 20px;
+    cursor: pointer;
 }
 
 .pokemon-card img {
@@ -109,6 +110,13 @@ h2 {
 
 .load-more-pokemon:hover {
     background-color: rgb(115, 200, 228);
+}
+
+.dark-background {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.4)
 }
 
 

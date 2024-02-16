@@ -20,7 +20,7 @@ async function downloadPokemonApiInJsons() {
         pokemonJsons = await response.json()
         pokemonJsonsArray.push(pokemonJsons)
     }
-    console.log(pokemonJsonsArray[0])
+    // console.log(pokemonJsonsArray[0])
 }
 
 
@@ -79,7 +79,44 @@ function loadMorePokemon() {
     pokemonJsonsArray = [];
     pokemonCardBGColorArray = [];
     init();
+}
 
+
+function searchField() {
+    let searchInput = document.getElementById('search-bar').value.toLowerCase();
+    let allPokemonContainer = document.getElementById('show-all-pokemon-container');
+    allPokemonContainer.innerHTML = ``;
+
+    for (let i = 0; i < pokemonJsonsArray.length; i++) {
+        const pokemon = pokemonJsonsArray[i]
+        const pokemonTypes = pokemonJsonsArray[i]['types'];
+        const pokemonId =  pokemon['id'].toString();
+        const pokemonCardImage = pokemon['sprites']['other']['dream_world']['front_default']
+
+        if (pokemon['name'].includes(searchInput) || pokemonId.includes(searchInput)) {
+            allPokemonContainer.innerHTML += renderAllPokemmonHtml(i, pokemon, pokemonCardImage)
+            changeCardBackgroundColor(i);
+            renderSearchFunctionTypes(i, pokemonTypes)
+        }
+    }
+}
+
+
+function renderSearchFunctionTypes(i, pokemonTypes) {
+    let typeContainer = document.getElementById(`type-container-${i}`)
+    for (let j = 0; j < pokemonTypes.length; j++) {
+        const pokemonType = pokemonTypes[j]['type']['name'];
+        typeContainer.innerHTML += renderPokemonTypesHtml(pokemonType);
+    }
+}
+
+
+function openBackground() {
+    let background = document.getElementById('body');
+    background.innerHTML += `
+        <div class"dark-background">
+        </div>
+    `
 }
 
 
@@ -88,7 +125,7 @@ function loadMorePokemon() {
 
 function renderAllPokemmonHtml(i, pokemon, pokemonCardImage) {
     return /*html*/`
-        <div id="pokemon-card-${i}" class="pokemon-card">
+        <div id="pokemon-card-${i}" class="pokemon-card" onclick="openBackground()">
             <div>
                 <h2>${formatPokemonIdText(pokemon['id'])}</h2>
                 <h1>${pokemon['name']}</h1>
