@@ -68,6 +68,11 @@ function changeCardBackgroundColor(i) {
 }
 
 
+function changeOverviewBackgroundColor(i) {
+    document.getElementById(`pokemon-overview`).style.background = pokemonCardBGColorArray[i]
+}
+
+
 function formatPokemonIdText(id) {
     let pokemonId = id.toString();
     let number = '#' + pokemonId.padStart(3, '0');
@@ -114,25 +119,38 @@ function renderSearchFunctionTypes(i, pokemonTypes) {
 
 function openBackground(i) {
     let background = document.getElementById('body');
+    background.innerHTML += renderDarkBackgroundHtml();
+    
     scrollManagement();
-    background.innerHTML += /*html*/`
-        <div id="dark-background" class="dark-background">
-            
-        </div>
-    `
-
-    let darkBackground = document.getElementById('dark-background');
-    darkBackground.innerHTML = /*html*/`
-        <button class="skip-btn next" onclick="nextPokemon('+')">></button>
-        <button class="skip-btn prev" onclick="prevPokemon('-')"><</button>
-        <div id="pokemon-details-card-${i}" class="pokemon-details-card">
-            ${i}
-        </div>
-    `
+    openPokemonDetails(i);
+    changeOverviewBackgroundColor(i)
 }
 
 
+function openPokemonDetails(i) {
+    const currentPokemon = pokemonJsonsArray[i];
+    
+    let darkBackground = document.getElementById('dark-background');
+    darkBackground.innerHTML = renderPokeDetailsCardHtml(i, currentPokemon);
 
+    let typesContainer = document.getElementById('overview-types');
+    for (let i = 0; i < currentPokemon['types'].length; i++) {
+        const type = currentPokemon['types'][i]['type']['name'];
+        typesContainer.innerHTML += renderDetailsCardTypesHtml(type);
+    }
+}
+
+
+function stopClickingThrough(event) {
+    event.stopPropagation();
+}
+
+
+function closeDarkBackground() {
+    let darkBackground = document.getElementById('dark-background');
+    darkBackground.remove();
+    scrollManagement();
+}
 
 
 function scrollManagement(){
@@ -169,4 +187,33 @@ function renderPokemonTypesHtml(pokemonType) {
     return /*html*/`
         <div class="pokemon-types m-top">${pokemonType}</div>
     `
+}
+
+
+function renderDarkBackgroundHtml() {
+    return /*html*/`
+        <div id="dark-background" class="dark-background" onclick="closeDarkBackground()">
+
+        </div>
+    `
+}
+
+function renderPokeDetailsCardHtml(i, currentPokemon) {
+    return /*html*/`
+        <button class="skip-btn next" onclick="nextPokemon('+')">></button>
+        <button class="skip-btn prev" onclick="prevPokemon('-')"><</button>
+        <div id="pokemon-details-card-${i}" class="pokemon-details-card" onclick="stopClickingThrough(event)">
+            <div id="pokemon-overview">
+                <h2>${formatPokemonIdText(currentPokemon['id'])}</h2>
+                <h1>${currentPokemon['name']}</h1>
+                <div id="overview-types">
+                <!-- type loop -->
+                </div>
+            </div>
+        </div>
+    `
+}
+
+function renderDetailsCardTypesHtml(type) {
+    return /*html*/`<div class="pokemon-types m-top">${type}</div>`
 }
