@@ -183,6 +183,7 @@ function renderAllPokemmonHtml(i, pokemon, pokemonCardImage) {
 }
 
 
+
 function renderPokemonTypesHtml(pokemonType) {
     return /*html*/`
         <div class="pokemon-types m-top">${pokemonType}</div>
